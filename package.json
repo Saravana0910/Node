@@ -7,6 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+  "@salesforce/mcp": "^1.x.x", // version may vary
+  "express": "^4.18.2"
   }
 }
