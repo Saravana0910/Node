@@ -12,13 +12,14 @@ app.post('/run', (req, res) => {
     console.log('Running command:', command);
 
     exec(command, (error, stdout, stderr) => {
+        let output = "";
         if (error) {
-            return res.send(`<pre>Error: ${error.message}</pre>`);
+            output += `Error: ${error.message}\n`;
         }
-        if (stderr) {
-            return res.send(`<pre>Stderr: ${stderr}</pre>`);
-        }
-        res.send(`<pre>${stdout}</pre>`);
+        output += `\n--- STDOUT ---\n${stdout}`;
+        output += `\n--- STDERR ---\n${stderr}`;
+
+        res.send(`<pre>${output}</pre>`);
     });
 });
 
