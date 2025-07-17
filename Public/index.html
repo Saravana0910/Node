@@ -1,29 +1,13 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SFDX CLI UI</title>
+    <title>Run Command</title>
 </head>
 <body>
-  <h2>Run SFDX Command</h2>
-  <form id="cli-form">
-    <input type="text" id="command" placeholder="Enter sfdx command" size="50" required>
-    <button type="submit">Run</button>
-  </form>
-  <pre id="output"></pre>
-
-  <script>
-    document.getElementById('cli-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const cmd = document.getElementById('command').value;
-      const res = await fetch('/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command: cmd })
-      });
-      const data = await res.text();
-      document.getElementById('output').textContent = data;
-    });
-  </script>
+    <h1>Execute Command</h1>
+    <form action="/run" method="post">
+        <input type="text" name="command" placeholder="Enter command" size="50" />
+        <button type="submit">Run</button>
+    </form>
 </body>
 </html>
