@@ -1,29 +1,28 @@
 const express = require('express');
 const { exec } = require('child_process');
-const bodyParser = require('body-parser');
 const path = require('path');
-
 const app = express();
-const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'Public')));
 
 app.post('/run', (req, res) => {
-  const cmd = req.body.command;
+    const command = req.body.command;
 
-  if (!cmd || !cmd.startsWith('sfdx')) {
-    return res.status(400).send('Only sfdx commands are allowed.');
-  }
+    console.log('Running command:', command);
 
-  exec(cmd, { timeout: 10000 }, (err, stdout, stderr) => {
-    if (err) {
-      return res.status(500).send(`❌ Error:\n${stderr || err.message}`);
-    }
-    res.send(`✅ Output:\n${stdout}`);
-  });
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            return res.send(`<pre>Error: ${error.message}</pre>`);
+        }
+        if (stderr) {
+            return res.send(`<pre>Stderr: ${stderr}</pre>`);
+        }
+        res.send(`<pre>${stdout}</pre>`);
+    });
 });
 
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 });
